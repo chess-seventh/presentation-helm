@@ -1,10 +1,12 @@
 # HELM and HELMFILE presentation
 
-## Resources
+## Tools
 
-- [Helm]()
-- [Helmfile]()
-- [minikube]()
+- [Helm](https://github.com/helm/helm)
+- [Helmfile](https://github.com/roboll/helmfile)
+- [minikube](https://github.com/kubernetes/minikube)
+- [mdp](https://github.com/visit1985/mdp)
+- [cowsay](https://github.com/piuccio/cowsay)
 
 
 ## Contributing
