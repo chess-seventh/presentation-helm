@@ -1,0 +1,4 @@
+environments:
+  demo:
+    values:
+      - kubeContext: demo.rootbytes.net
