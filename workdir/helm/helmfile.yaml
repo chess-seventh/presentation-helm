@@ -1,0 +1,10 @@
+bases:
+  - "environments.yaml"
+---
+helmfiles:
+  - "releases/namespaces.yaml"
+  - "releases/secrets.yaml"
+  - "releases/metrics-server.yaml"
+  - "releases/nginx-ingress.yaml"
+  - "releases/external-dns.yaml"
+  - "releases/cert-manager.yaml"
