@@ -41,7 +41,7 @@ Release manager for Kubernetes
 
 ## Charts
 
-Chart set of dependencies to deploy an application
+A chart is a set of dependencies to deploy an application
 
 e.g: [Nginx-ingress chart](https://github.com/helm/charts/tree/master/stable/nginx-ingress)
 
@@ -219,4 +219,76 @@ You can now re-run the chart.
 \     └── values.yaml
 \ 4 directories, 9 files
 \```
+
+
+--------------------
+
+
+# Adapt and deploy your own chart
+
+
+\```
+\ $ helm install my-chart charts/chess-chart
+\```
+
+--------------------
+
+# Helmfile
+
+Puts all the charts you want to deploy in one single file !
+
+
+\```
+\ $ cat helmfile.yaml
+\bases:
+\  - "environments.yaml"
+\---
+\helmfiles:
+\  - "releases/namespaces.yaml"
+\  - "releases/secrets.yaml"
+\  - "releases/metrics-server.yaml"
+\  - "releases/nginx-ingress.yaml"
+\  - "releases/external-dns.yaml"
+\  - "releases/cert-manager.yaml"
+\```
+
+Environments to ease up where you wanna deploy!
+
+\```
+\ $ cat environments.yaml
+\environments:
+\  demo:
+\    values:
+\      - kubeContext: demo.rootbytes.net
+\```
+
+
+--------------------
+
+# Demo time !
+
+
+--------------------
+
+
+# Links and sources
+
+
+\```
+\ .............................................
+\ | github.com/chess-seventh/presentation-helm |
+\ ---------------------------------------------
+\            /
+\           /
+\         .--.
+\        |o_o |
+\        |:_/ |
+\       //   \\ \\
+\      (|     | )
+\     /'\\_   \_/`\\
+\     \\___)=(___/
+\```
+
+Questions?
+
 
