@@ -1,0 +1,63 @@
+bases:
+  - ../environments.yaml
+---
+repositories:
+- name: "stable"
+  url: "https://kubernetes-charts.storage.googleapis.com"
+- name: "cloudposse-incubator"
+  url: "https://charts.cloudposse.com/incubator/"
+
+
+releases:
+- name: 'nginx-configmap'
+  chart: "kubernetes-incubator/raw"
+  version: "0.2.3"
+  namespace: "kube-system"
+  wait: true
+  force: true
+  values:
+  - resources:
+    - apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: nginx-ingress-controller
+        namespace: kube-system
+        labels:
+          app.kubernetes.io/name: nginx-ingress
+          app.kubernetes.io/part-of: nginx-ingress
+      data:
+        proxy-connect-timeout: "10"
+        proxy-read-timeout: "120"
+        proxy-send-timeout: "120"
+
+- name: "nginx-ingress"
+  namespace: "kube-system"
+  labels:
+    chart: "nginx-ingress"
+    repo: "stable"
+    component: "ingress"
+    namespace: "kube-system"
+    vendor: "kubernetes"
+    default: "true"
+  chart: "stable/nginx-ingress"
+  version: "1.34.1"
+  wait: true
+  values:
+    - controller:
+        image:
+          repository: "quay.io/kubernetes-ingress-controller/nginx-ingress-controller"
+          tag: "0.30.0"
+        publishService:
+          enabled: true
+        hostNetwork: true
+        resources:
+          limits:
+            cpu: '200m'
+            memory: '256Mi'
+          requests:
+            cpu: '50m'
+            memory: '128Mi'
+        kind: 'DaemonSet'
+        defaultBackendService: "kube-system/ingress-backend-default"
+        metrics:
+          enabled: true

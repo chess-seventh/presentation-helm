@@ -1,0 +1,46 @@
+bases:
+  - ../environments.yaml
+---
+repositories:
+- name: "stable"
+  url: "https://kubernetes-charts.storage.googleapis.com"
+
+releases:
+################################################################################
+## External DNS ################################################################
+################################################################################
+
+#
+# References:
+#   - https://github.com/kubernetes/charts/blob/master/stable/external-dns/values.yaml
+#
+- name: "external-dns"
+  namespace: "kube-system"
+  labels:
+    chart: "external-dns"
+    repo: "stable"
+    component: "ingress"
+    namespace: "kube-system"
+    vendor: "kubernetes-incubator"
+    default: "true"
+  chart: "stable/external-dns"
+  version: "2.15.2"
+  wait: true
+  values:
+    - sources:
+      - ingress
+      - service
+      domainFilters: {{ env "EXTERNAL_DNS_DOMAIN_FILTERS" | splitList ";" }}
+      provider: {{ env "EXTERNAL_DNS_PROVIDER" | default "aws" }}
+      policy: {{ env "EXTERNAL_DNS_POLICY" | default "upsert-only" }}
+      podAnnotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+      resources:
+        limits:
+          cpu: '{{ env "EXTERNAL_DNS_LIMIT_CPU" | default "200m" }}'
+          memory: '{{ env "EXTERNAL_DNS_LIMIT_MEMORY" | default "256Mi" }}'
+        requests:
+          cpu: '{{ env "EXTERNAL_DNS_REQUEST_CPU" | default "100m" }}'
+          memory: '{{ env "EXTERNAL_DNS_REQUEST_MEMORY" | default "128Mi" }}'
+      rbac:
+        create: "true"
